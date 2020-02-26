@@ -4,8 +4,19 @@
 using std::string;
 
 string LookAndSay(int n) {
-  // TODO - you fill in here.
-  return "";
+  string res = "1";
+  for (int i = 1; i < n; ++i) {
+    string tmp;
+    for (int j = 0; j < res.size(); ++j) {
+      int count = 1;
+      while (j + 1 < res.size() && res[j] == res[j+1]) {
+        ++j, ++count;
+      }
+      tmp += std::to_string(count) + res[j];
+    }
+    res = tmp;
+  }
+  return res;
 }
 
 int main(int argc, char* argv[]) {

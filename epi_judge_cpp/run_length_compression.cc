@@ -4,12 +4,31 @@
 #include "test_framework/test_failure.h"
 using std::string;
 string Decoding(const string &s) {
-  // TODO - you fill in here.
-  return "";
+  string decoded;
+  int cnt = 0;
+  for (const char c : s) {
+    if (std::isdigit(c)) {
+      cnt = cnt * 10 + c - '0';
+    }
+    else{
+      decoded.append(cnt, c);
+      cnt = 0;
+    }
+  }
+  return decoded;
 }
 string Encoding(const string &s) {
-  // TODO - you fill in here.
-  return "";
+  string encoded;
+  for (int i = 1, cnt = 1; i <= s.size(); ++i) {
+    if (i == s.size() || s[i] != s[i - 1]) {
+      encoded += std::to_string(cnt) + s[i - 1];
+      cnt = 1;
+    }
+    else {
+      ++cnt;
+    }
+  }
+  return encoded;
 }
 void RleTester(const string &encoded, const string &decoded) {
   if (Decoding(encoded) != decoded) {

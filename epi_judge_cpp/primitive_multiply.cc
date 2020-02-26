@@ -1,7 +1,22 @@
 #include "test_framework/generic_test.h"
+unsigned long long Add(unsigned long long, unsigned long long);
+
 unsigned long long Multiply(unsigned long long x, unsigned long long y) {
-  // TODO - you fill in here.
-  return 0;
+  unsigned long long res = 0;
+  while (x) {  
+    if (x & 1) {
+      res = Add (res, y);
+    }
+    x >>= 1;
+    y <<= 1;
+  }  
+  return res;
+}
+
+unsigned long long Add (unsigned long long x, unsigned long long y) {
+  if (x == 0) return y;
+  if (y == 0) return x;
+  return Add(x ^ y, (x & y) << 1);
 }
 
 int main(int argc, char* argv[]) {

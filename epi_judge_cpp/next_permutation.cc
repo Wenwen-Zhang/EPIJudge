@@ -1,10 +1,36 @@
 #include <vector>
+// #include <algorithm>
+// #include <iterator>
 
 #include "test_framework/generic_test.h"
 using std::vector;
+
 vector<int> NextPermutation(vector<int> perm) {
-  // TODO - you fill in here.
-  return {};
+  // Find the first entry from the right that is smaller than the entry
+  // immediately after it.
+  std::vector<int>::reverse_iterator inversion_point = std::is_sorted_until(perm.rbegin(), perm.rend());
+  if (inversion_point == perm.rend()) {
+    // perm is sorted in decreasing order, so it's the last permutation.
+    return {};
+  }
+
+  // Swap the entry referenced by inversion_point with smallest entry
+  // appearing after inversion_point that is greater than the entry referenced
+  // by inversion_point:
+  //
+  // 1.) Find the smallest entry after inversion_point that's greater than the
+  //     entry referenced by inversion_point. Since perm must be sorted in
+  //     decreasing order after inversion_point, we can use a fast algorithm
+  //     to find this entry.
+  std::vector<int>::reverse_iterator least_upper_bound =
+      upper_bound(perm.rbegin(), inversion_point, *inversion_point);
+
+  // 2.) Perform the swap.
+  iter_swap(inversion_point, least_upper_bound);
+
+  // Reverse the subarray that follows inversion_point.
+  reverse(perm.rbegin(), inversion_point);
+  return perm;
 }
 
 int main(int argc, char* argv[]) {

@@ -4,8 +4,12 @@
 using std::string;
 
 int SSDecodeColID(const string& col) {
-  // TODO - you fill in here.
-  return 0;
+  int res = 0;
+
+  for (char c: col) {
+    res = res * 26 + c - 'A' + 1;
+  }
+  return res;
 }
 
 int main(int argc, char* argv[]) {
