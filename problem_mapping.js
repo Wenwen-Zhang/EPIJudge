@@ -65,7 +65,7 @@ problem_mapping = {
                 "passed": 0,
                 "total": 10000
             },
-            "Python: closest_int_same_weight.py": { 
+            "Python: closest_int_same_weight.py": {
                 "passed": 0,
                 "total": 10000
             }
@@ -256,7 +256,7 @@ problem_mapping = {
         },
         "5.06 Buy and sell a stock once": {
             "C++: buy_and_sell_stock.cc": {
-                "passed": 0,
+                "passed": 402,
                 "total": 402
             },
             "Java: BuyAndSellStock.java": {
