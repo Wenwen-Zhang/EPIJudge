@@ -6,11 +6,90 @@
 #include "test_framework/test_failure.h"
 #include "test_framework/timed_executor.h"
 
+shared_ptr<ListNode<int>> HasCycle(const shared_ptr<ListNode<int>>&);
+int GetLength(shared_ptr<ListNode<int>>);
+void AdvanceByK(int k, shared_ptr<ListNode<int>> *);
+shared_ptr<ListNode<int>> OverlappingNoCycleLists(shared_ptr<ListNode<int>>, shared_ptr<ListNode<int>>);
+
+
 shared_ptr<ListNode<int>> OverlappingLists(shared_ptr<ListNode<int>> l0,
                                            shared_ptr<ListNode<int>> l1) {
-  // TODO - you fill in here.
+
+  shared_ptr<ListNode<int>> l0_cycle_head = HasCycle(l0), l1_cycle_head = HasCycle(l1);
+
+  if (!l0_cycle_head && !l1_cycle_head) {
+    return O
+  }
+
+
   return nullptr;
 }
+
+shared_ptr<ListNode<int>> HasCycle(const shared_ptr<ListNode<int>>& head) {
+  shared_ptr<ListNode<int>> slow = head, fast = head;
+  while (fast && fast->next) {
+    slow = slow->next;
+    fast = fast->next->next;
+    if (slow == fast) {
+      int cycle_len = 0;
+      do {
+        ++cycle_len;
+        fast = fast->next;
+      } while(fast != slow);
+
+      auto cycle_len_advanced_iter = head;
+      while(cycle_len) {
+        cycle_len_advanced_iter = cycle_len_advanced_iter->next;
+        cycle_len--;
+      }
+
+      auto iter = head;
+
+      while(iter != cycle_len_advanced_iter) {
+        iter = iter->next;
+        cycle_len_advanced_iter = cycle_len_advanced_iter->next;
+      }
+      return iter;
+
+    }
+  }
+  return nullptr;
+}
+
+shared_ptr<ListNode<int>> OverlappingNoCycleLists(
+    shared_ptr<ListNode<int>> l0, shared_ptr<ListNode<int>> l1) {
+  
+  int len0 = GetLength(l0);
+  int len1 = GetLength(l1);
+
+  AdvanceByK(abs(len0 - len1), len0 > len1? &l0 : &l1);
+
+  while (l0 && l1 && l0 != l1) {
+    l0 = l0->next;
+    l1 = l1->next;
+  }
+
+  return l1;
+}
+
+int GetLength(shared_ptr<ListNode<int>> L) {
+  int len = 0;
+  while (L) {
+    L = L->next;
+    ++len;
+  }
+  return len;
+
+}
+
+void AdvanceByK(int k, shared_ptr<ListNode<int>> *L) {
+  while (k) {
+    (*L) = (*L)->next;
+    --k;
+  }
+}
+
+
 void OverlappingListsWrapper(TimedExecutor& executor,
                              shared_ptr<ListNode<int>> l0,
                              shared_ptr<ListNode<int>> l1,
