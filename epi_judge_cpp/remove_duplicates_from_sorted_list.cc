@@ -5,8 +5,17 @@
 using std::shared_ptr;
 
 shared_ptr<ListNode<int>> RemoveDuplicates(const shared_ptr<ListNode<int>>& L) {
-  // TODO - you fill in here.
-  return nullptr;
+  shared_ptr<ListNode<int>> iter = L;
+  while (iter) {
+    auto next_node = iter->next;
+    while (next_node && next_node->data == iter->data) {
+      next_node = next_node->next;
+    }
+    iter->next = next_node->next;
+    iter = next_node;
+  }
+
+  return L;
 }
 
 int main(int argc, char* argv[]) {
@@ -16,3 +25,4 @@ int main(int argc, char* argv[]) {
                          "remove_duplicates_from_sorted_list.tsv",
                          &RemoveDuplicates, DefaultComparator{}, param_names);
 }
+
