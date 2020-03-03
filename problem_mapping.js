@@ -746,7 +746,7 @@ problem_mapping = {
         },
         "7.05 Test for overlapping lists---lists may have cycles": {
             "C++: do_lists_overlap.cc": {
-                "passed": 0,
+                "passed": 120,
                 "total": 120
             },
             "Java: DoListsOverlap.java": {

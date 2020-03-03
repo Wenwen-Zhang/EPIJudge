@@ -10,16 +10,44 @@ shared_ptr<ListNode<int>> HasCycle(const shared_ptr<ListNode<int>>&);
 int GetLength(shared_ptr<ListNode<int>>);
 void AdvanceByK(int k, shared_ptr<ListNode<int>> *);
 shared_ptr<ListNode<int>> OverlappingNoCycleLists(shared_ptr<ListNode<int>>, shared_ptr<ListNode<int>>);
+int Distance(shared_ptr<ListNode<int>> start, shared_ptr<ListNode<int>> );
 
 
-shared_ptr<ListNode<int>> OverlappingLists(shared_ptr<ListNode<int>> l0,
-                                           shared_ptr<ListNode<int>> l1) {
+shared_ptr<ListNode<int>> OverlappingLists(shared_ptr<ListNode<int>> l0, shared_ptr<ListNode<int>> l1) {
 
   shared_ptr<ListNode<int>> l0_cycle_head = HasCycle(l0), l1_cycle_head = HasCycle(l1);
 
   if (!l0_cycle_head && !l1_cycle_head) {
-    return O
+    return OverlappingNoCycleLists(l0, l1);
   }
+  else if ((!l0_cycle_head && l1_cycle_head) || (l0_cycle_head && !l1_cycle_head)) {
+    return nullptr;
+  }
+
+  //Both have cycles.
+  shared_ptr<ListNode<int>> temp = l0_cycle_head;
+  do {
+    temp = temp->next;
+  } while(temp != l0_cycle_head && temp != l1_cycle_head);
+
+  if (temp != l1_cycle_head) return nullptr;
+
+
+  //Overlap before cycle
+  int distl0 = Distance(l0, l0_cycle_head);
+  int distl1 = Distance(l1, l1_cycle_head);
+
+  AdvanceByK(abs(distl0 - distl1), distl0 > distl1? &l0 : &l1);
+  
+  while (l0 != l1 && l0 != l0_cycle_head && l1 != l1_cycle_head) {
+    l0 = l0->next;
+    l1 = l1->next;
+  }
+
+  // if l0 == l1 before cycle head, return the node
+  // otherwise, the first overlapping node is not unique, return any node on the cycle
+  return l0 == l1? l0 : l0_cycle_head;
+
 
 
   return nullptr;
@@ -54,6 +82,15 @@ shared_ptr<ListNode<int>> HasCycle(const shared_ptr<ListNode<int>>& head) {
     }
   }
   return nullptr;
+}
+
+int Distance(shared_ptr<ListNode<int>> start, shared_ptr<ListNode<int>> dest) {
+  int dis = 0;
+  while ( start != dest) {
+    start = start->next;
+    ++dis;
+  }
+  return dis;
 }
 
 shared_ptr<ListNode<int>> OverlappingNoCycleLists(
