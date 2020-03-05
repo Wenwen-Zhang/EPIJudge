@@ -7,12 +7,34 @@
 #include "test_framework/generic_test.h"
 #include "test_framework/test_failure.h"
 #include "test_framework/timed_executor.h"
+
 using std::shared_ptr;
-shared_ptr<ListNode<int>> ListPivoting(const shared_ptr<ListNode<int>>& l,
-                                       int x) {
-  // TODO - you fill in here.
-  return nullptr;
+
+void AppendNode(shared_ptr<ListNode<int>> *, shared_ptr<ListNode<int>> *);
+
+shared_ptr<ListNode<int>> ListPivoting(const shared_ptr<ListNode<int>>& l, int x) {
+  shared_ptr<ListNode<int>> less_head (new ListNode<int>), equal_head(new ListNode<int>), greater_head(new ListNode<int>);
+  shared_ptr<ListNode<int>> less_iter = less_head, equal_iter = equal_head, greater_iter = greater_head;
+
+  shared_ptr<ListNode<int>> iter = l;
+  
+  while (iter){
+    AppendNode(&iter, iter->data < x ? &less_iter : iter->data == x? &equal_iter: &greater_iter);
+  }
+
+  greater_iter->next = nullptr;
+  equal_iter->next = greater_head->next;
+  less_iter->next = equal_head->next;
+  return less_head->next;
 }
+
+void AppendNode(shared_ptr<ListNode<int>> *node, shared_ptr<ListNode<int>> *tail) {
+  (*tail)->next = *node;
+  *tail = *node;
+  (*node) = (*node)->next;
+}
+
+
 std::vector<int> ListToVector(const shared_ptr<ListNode<int>>& l) {
   std::vector<int> v;
   ListNode<int>* it = l.get();

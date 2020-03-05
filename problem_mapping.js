@@ -844,7 +844,7 @@ problem_mapping = {
         },
         "7.12 Implement list pivoting": {
             "C++: pivot_list.cc": {
-                "passed": 0,
+                "passed": 208,
                 "total": 208
             },
             "Java: PivotList.java": {
@@ -858,7 +858,7 @@ problem_mapping = {
         },
         "7.13 Add list-based integers": {
             "C++: int_as_list_add.cc": {
-                "passed": 0,
+                "passed": 2002,
                 "total": 2002
             },
             "Java: IntAsListAdd.java": {
