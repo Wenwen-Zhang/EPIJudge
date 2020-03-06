@@ -3,26 +3,70 @@
 #include "test_framework/generic_test.h"
 #include "test_framework/serialization_traits.h"
 #include "test_framework/test_failure.h"
+#include <algorithm>
+#include <stack>
+#include <stdexcept>
+
 using std::length_error;
+using std::max;
+using std::stack;
 
 class Stack {
  public:
   bool Empty() const {
-    // TODO - you fill in here.
-    return true;
+    return element_.empty();
   }
+
   int Max() const {
-    // TODO - you fill in here.
-    return 0;
+    if (Empty()) {
+      throw length_error("Max(): empty stack");
+    }
+    return cache_max_with_count_.top().max;
   }
+
   int Pop() {
-    // TODO - you fill in here.
-    return 0;
+    if (Empty()) {
+      throw length_error("Pop(): empty stack");
+    }
+    int pop_element = element_.top();
+    element_.pop();
+    const int curr_max = cache_max_with_count_.top().max;
+    if (pop_element == curr_max) {
+      int & max_freq = cache_max_with_count_.top().count;
+      --max_freq;
+      if (max_freq == 0) {
+        cache_max_with_count_.pop();
+      }
+
+    }
+
+    return pop_element;
   }
+
   void Push(int x) {
-    // TODO - you fill in here.
-    return;
+    element_.emplace(x);
+    if (cache_max_with_count_.empty()) {
+      cache_max_with_count_.emplace(MaxWithCount{x, 1});
+    }
+    else{
+      const int curr_max = cache_max_with_count_.top().max;
+      if (x == curr_max) {
+        int & max_freq = cache_max_with_count_.top().count;
+        ++max_freq;
+      }
+      else if (x > curr_max) {
+        cache_max_with_count_.emplace(MaxWithCount{x, 1});
+      }
+    }
   }
+
+
+  private:
+    stack<int> element_;
+    struct MaxWithCount{
+      int max, count;
+    };
+    stack<MaxWithCount> cache_max_with_count_;
 };
 struct StackOp {
   std::string op;
