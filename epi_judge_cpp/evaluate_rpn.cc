@@ -1,9 +1,25 @@
 #include <string>
+#include <stack>
+#include <iostream>
+// #include <sstream>
 
 #include "test_framework/generic_test.h"
+
+
 using std::string;
+using std::stack;
+using std::stringstream;
 int Evaluate(const string& expression) {
-  // TODO - you fill in here.
+  stack<int> intermediate_results;
+  stringstream ss(expression);
+  string token;
+  const char delimiter = ',';
+
+  while (getline(ss, token, delimiter)) {
+    if ((token == "+") || (token == "-") || (token == "*") || (token == "/")){
+      
+    }
+  }
   return 0;
 }
 
